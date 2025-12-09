@@ -11,71 +11,291 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Bubbly Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      background-color: #0f172a;
-      color: #e2e8f0;
-      font-family: "Fredoka One", cursive;
+    :root {
+      /* Shared cosmic gradient */
+      --cosmic-bg:
+        radial-gradient(circle at 20% 20%, #c900ff22, transparent 45%),
+        radial-gradient(circle at 80% 80%, #c505d622, transparent 50%),
+        linear-gradient(135deg, #000000, #040d2c, #150035, #38005a, #c900ff);
     }
+
+    body {
+      background: var(--cosmic-bg);
+      color: #e7e1f5;
+      font-family: "Inter", sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* TOP NAV BAR */
+    .topnav {
+      background: linear-gradient(90deg, #000000aa, #040d2caa, #150035aa);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+    }
+
+    .nav-btn {
+      color: #c9c4dd;
+      font-size: 15px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      transition: 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: rgba(255,255,255,0.10);
+      color: #fff;
+    }
+
+    .nav-btn.active {
+      background-color: rgba(255,255,255,0.18);
+      color: #fff;
+    }
+
+    /* COSMIC TITLE */
+    .cosmic-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #c900ff, #8f1eff, #c505d6, #ff00ff);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: cosmicFlow 6s ease infinite;
+      text-shadow: 0 0 18px #c900ff44, 0 0 32px #c505d633;
+    }
+
+    @keyframes cosmicFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Panels */
+    .panel {
+      background: linear-gradient(145deg, #040d2c, #150035, #220044);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 18px rgba(201, 0, 255, 0.18);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .panel:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 26px rgba(201, 0, 255, 0.32);
+    }
+
+    .table-header {
+      background: rgba(255,255,255,0.08);
+      color: #e8d8ff;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-thumb { background: #7b00b8; border-radius: 4px; }
+
   </style>
 </head>
 
-<body class="min-h-screen flex">
+<body class="flex flex-col">
 
-  <!-- LEFT SIDE NAVIGATION -->
-  <aside class="w-48 bg-slate-900/70 backdrop-blur-lg border-r border-slate-800 p-6 flex flex-col gap-6">
-    <button id="tab-home"
-      onclick="showTab('home')"
-      class="text-slate-300 hover:text-white text-lg">🏠 Home</button>
+  <!-- 🔵 TOP NAVIGATION -->
+  <nav class="topnav w-full flex items-center justify-between px-8 py-4">
+    
+    <!-- Cosmic HedgePix logo -->
+    <div class="cosmic-title">HedgePix</div>
 
-    <button id="tab-rankings"
-      onclick="showTab('rankings')"
-      class="text-slate-300 hover:text-white text-lg">📊 Rankings</button>
+    <!-- Menu buttons -->
+    <div class="flex gap-4">
+      <button id="tab-home"     onclick="showTab('home')"     class="nav-btn">Home</button>
+      <button id="tab-rankings" onclick="showTab('rankings')" class="nav-btn">Rankings</button>
+      <button id="tab-news"     onclick="showTab('news')"     class="nav-btn">News</button>
+      <button id="tab-info"     onclick="showTab('info')"     class="nav-btn">Information</button>
+    </div>
+  </nav>
 
-    <button id="tab-news"
-      onclick="showTab('news')"
-      class="text-slate-300 hover:text-white text-lg">📰 News</button>
+  <!-- MAIN CONTENT AREA -->
+  <main class="flex-1 p-10 overflow-auto">
 
-    <button id="tab-info"
-      onclick="showTab('info')"
-      class="text-slate-300 hover:text-white text-lg">ℹ️ Info</button>
-  </aside>
+<!-- HOME TAB -->
+<section id="home" class="mt-20 pb-10 relative">
 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 p-10">
+  <!-- Scroll shadow on top -->
+  <div class="scroll-shadow"></div>
 
-    <!-- HOME TAB -->
-    <section id="home" class="text-center">
-      <h1 class="text-5xl font-bold text-emerald-300 mb-6">
-        Welcome to HedgePix
-      </h1>
+  <!-- HERO -->
+<div class="text-center mb-24 max-w-3xl mx-auto fade-block">
 
-      <p class="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-        HedgePix provides machine-learning–driven stock rankings trained on cross-sectional
-        market features, volatility signals, factor sensitivities, and predictive embeddings.
-        Ranks represent projected performance over ~21 days, with lower ranks indicating
-        stronger expected returns.
-      </p>
-    </section>
+  <h1 class="cosmic-title mb-10"
+      style="font-size: 140px; line-height: 1.05; padding-bottom: 25px;">
+    HedgePix
+  </h1>
+
+  <p class="text-sm text-purple-200 leading-relaxed max-w-xl mx-auto mt-6">
+    HedgePix is a machine-learning research tool that generates forward-looking stock rankings.
+    Inspired by quantitative hedge-fund techniques, the system highlights statistical patterns
+    that may be relevant to short-term market behaviour.
+  </p>
+
+</div>
+
+
+  <div class="max-w-5xl mx-auto space-y-20">
+
+    <!-- SECTION 1 — LEFT -->
+    <div class="fade-block flex justify-start">
+      <div class="max-w-xl">
+
+        <h2 class="text-sm font-semibold text-white uppercase tracking-wide mb-3">
+          What HedgePix Does
+        </h2>
+
+        <p class="text-sm text-purple-200 leading-relaxed">
+          HedgePix uses a machine learning model trained on historical market data. It studies how
+          stocks behave in different conditions, how they relate to one another, and how volatility
+          and momentum shift across time.
+        </p>
+
+        <p class="text-sm text-purple-200 leading-relaxed mt-3">
+          The system produces a daily ranking of stocks based on these patterns. A stock near the top
+          has characteristics similar to names that historically performed well in comparable market
+          environments. The ranking is not a price forecast—it is an ordered list of statistical
+          attractiveness.
+        </p>
+
+        <!-- Divider -->
+        <div class="soft-divider"></div>
+
+      </div>
+    </div>
+
+
+
+    <!-- SECTION 2 — RIGHT -->
+    <div class="fade-block flex justify-end">
+      <div class="max-w-xl">
+
+        <h2 class="text-sm font-semibold text-white uppercase tracking-wide mb-3">
+          How to Use HedgePix
+        </h2>
+
+        <p class="text-sm text-purple-200 leading-relaxed">
+          The Rankings page shows the system’s outlook for today. Stocks near the top are currently
+          favoured by the model. The “Top N” selector lets you view a focused subset or explore a
+          broader portion of the universe.
+        </p>
+
+        <p class="text-sm text-purple-200 leading-relaxed mt-3">
+          Clicking a ticker adds it to the chart below the table. This helps you track how its
+          ranking has evolved—whether its momentum is improving, deteriorating, or shifting in ways
+          that may matter for short-term research.
+        </p>
+
+        <!-- Divider -->
+        <div class="soft-divider"></div>
+
+      </div>
+    </div>
+
+
+
+    <!-- SECTION 3 — LEFT -->
+    <div class="fade-block flex justify-start">
+      <div class="max-w-xl">
+
+        <h2 class="text-sm font-semibold text-white uppercase tracking-wide mb-3">
+          Experimental and Not Financial Advice
+        </h2>
+
+        <p class="text-sm text-purple-200 leading-relaxed">
+          HedgePix is an experimental tool intended for educational purposes only. The model is
+          trained on past market data, which may not reflect future conditions. Market behaviour can
+          shift quickly due to new events, structural changes, or unexpected volatility.
+        </p>
+
+        <p class="text-sm text-purple-200 leading-relaxed mt-3">
+          Nothing on this website should be treated as investment guidance or a recommendation. Real
+          trading decisions require independent research, proper risk management, and professional
+          financial advice when needed.
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Fade animation styling -->
+<style>
+  .fade-block {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Gentle stagger for each block */
+  .fade-block:nth-child(1) { animation-delay: 0.1s; }
+  .fade-block:nth-child(2) { animation-delay: 0.25s; }
+  .fade-block:nth-child(3) { animation-delay: 0.4s; }
+  .fade-block:nth-child(4) { animation-delay: 0.55s; }
+</style>
+
+<style>
+  /* Soft dividing line between sections */
+  .soft-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
+    margin: 24px 0;
+  }
+
+  /* Gentle fade-up animation */
+  .fade-block {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.85s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-block:nth-child(1) { animation-delay: 0.05s; }
+  .fade-block:nth-child(2) { animation-delay: 0.15s; }
+  .fade-block:nth-child(3) { animation-delay: 0.25s; }
+  .fade-block:nth-child(4) { animation-delay: 0.35s; }
+
+
+
+</style>
 
     <!-- RANKINGS TAB -->
     <section id="rankings" class="hidden flex flex-col gap-10">
 
-      <!-- Rankings header -->
-      <div>
-        <h2 class="text-3xl text-emerald-300 text-center mb-2">Daily Model Rankings</h2>
-        <p class="text-center text-slate-400 max-w-2xl mx-auto">
-          See today’s ML-predicted ranking, last week change, and the model’s next-week projection.
-          Click tickers to add/remove them from the historical chart.
+      <div class="text-center">
+        <h2 class="text-3xl font-semibold text-white tracking-tight">Daily Rankings</h2>
+        <p class="text-purple-200 max-w-2xl mx-auto text-sm mt-2">
+          Explore model-generated ranks, their momentum, and predicted 1-week changes.
         </p>
 
-        <div class="mt-4 text-center">
-          <label>Top N:</label>
+        <div class="mt-4">
+          <label class="text-sm mr-2">Top N:</label>
           <select id="rankLimit"
-            class="bg-slate-700 px-3 py-1 rounded text-white">
+            class="bg-[#150035] border border-purple-700 px-3 py-1 rounded text-purple-100">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
@@ -85,49 +305,53 @@
         </div>
       </div>
 
-      <!-- Rankings table + chart -->
       <div class="flex flex-col lg:flex-row gap-8">
 
         <!-- TABLE -->
-        <div class="flex-1 bg-slate-900/60 rounded-xl border border-slate-700 overflow-auto max-h-[70vh]">
+        <div class="flex-1 panel rounded-xl overflow-auto max-h-[75vh]">
           <table class="w-full text-left">
-            <thead class="bg-slate-800 sticky top-0">
+            <thead class="table-header sticky top-0 text-sm">
               <tr>
-                <th class="px-3 py-2">Rank</th>
-                <th class="px-3 py-2">Ticker</th>
-                <th class="px-3 py-2">1w Change</th>
-                <th class="px-3 py-2">Next 1w (Pred)</th>
+                <th class="px-3 py-2 font-medium">Rank</th>
+                <th class="px-3 py-2 font-medium">Ticker</th>
+                <th class="px-3 py-2 font-medium">1w Δ</th>
+                <th class="px-3 py-2 font-medium">Next 1w</th>
               </tr>
             </thead>
-            <tbody id="tableBody"></tbody>
+            <tbody id="tableBody" class="text-sm"></tbody>
           </table>
         </div>
 
         <!-- CHART PANEL -->
-        <div class="flex-1 bg-slate-900/60 rounded-xl border border-slate-700 p-5">
-          <h3 class="text-xl text-emerald-300 mb-3">Historical Rankings (3 Months)</h3>
-          <div class="h-80">
+        <div class="flex-1 panel rounded-xl p-5">
+          <h3 class="text-xl text-white mb-3 font-medium tracking-tight">
+            Ranking History (90 Days)
+          </h3>
+          <div class="h-96">
             <canvas id="rankChart"></canvas>
           </div>
         </div>
-
       </div>
     </section>
 
     <!-- NEWS TAB -->
-    <section id="news" class="hidden text-center">
-      <h1 class="text-4xl text-emerald-300 mb-4">News</h1>
-      <p>Coming Soon…</p>
+    <section id="news" class="hidden text-center mt-10">
+      <h1 class="text-4xl text-white mb-4">News</h1>
+      <p class="text-purple-200">Coming Soon…</p>
     </section>
 
-    <!-- INFO TAB -->
-    <section id="info" class="hidden text-center">
-      <h1 class="text-4xl text-emerald-300 mb-4">Information</h1>
-      <p>Coming Soon…</p>
+    <!-- INFORMATION TAB -->
+    <section id="info" class="hidden text-center mt-10">
+      <h1 class="text-4xl text-white mb-4">Information</h1>
+      <p class="text-purple-200">Coming Soon…</p>
     </section>
 
   </main>
 
+  <script src="script.js"></script>
+
+</body>
+</html>
   <script src="script.js"></script>
 
 </body>

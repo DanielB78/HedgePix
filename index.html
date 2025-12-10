@@ -122,107 +122,100 @@
   <main class="flex-1 p-10 overflow-auto">
 
 <!-- HOME TAB -->
-<section id="home" class="mt-20 pb-10 relative">
+<section id="home" class="pt-32 pb-10 relative">
 
-  <!-- Scroll shadow on top -->
+  <!-- Scroll shadow -->
   <div class="scroll-shadow"></div>
 
   <!-- HERO -->
-<div class="text-center mb-24 max-w-3xl mx-auto fade-block">
+  <div class="text-center mb-40 max-w-3xl mx-auto fade-block">
+    <h1 class="cosmic-title mb-10"
+        style="font-size: 160px; line-height: 1.05; padding-bottom: 35px;">
+      HedgePix
+    </h1>
 
-  <h1 class="cosmic-title mb-10"
-      style="font-size: 140px; line-height: 1.05; padding-bottom: 25px;">
-    HedgePix
-  </h1>
+    <!-- TODAY’S TOP 5 STOCKS – CENTERED INLINE STRIP -->
+    <div id="homeTop5" class="mt-12 max-w-2xl mx-auto">
+      <h2 class="text-base font-semibold text-white uppercase tracking-wide mb-6 text-center">
+        Today’s Top 5 Stocks
+      </h2>
 
-  <p class="text-sm text-purple-200 leading-relaxed max-w-xl mx-auto mt-6">
-    HedgePix is a machine-learning research tool that generates forward-looking stock rankings.
-    Inspired by quantitative hedge-fund techniques, the system highlights statistical patterns
-    that may be relevant to short-term market behaviour.
-  </p>
+      <div id="top5Strip"
+        class="flex items-center justify-center gap-4 px-6 py-4 rounded-full bg-[#080a1a]/70 border border-purple-800/40 shadow-xl backdrop-blur-sm mx-auto"
+        style="white-space: nowrap;">
+        <!-- JS fills this -->
+        <span class="text-purple-300 opacity-60 text-sm">Loading…</span>
+      </div>
+    </div>
+  </div>
 
-</div>
 
-
-  <div class="max-w-5xl mx-auto space-y-20">
+  <!-- CONTENT BELOW — only visible once scrolling -->
+  <div class="max-w-6xl mx-auto space-y-40">
 
     <!-- SECTION 1 — LEFT -->
-    <div class="fade-block flex justify-start">
+    <div class="scroll-fade-left flex justify-start">
       <div class="max-w-xl">
-
-        <h2 class="text-sm font-semibold text-white uppercase tracking-wide mb-3">
+        <h2 class="text-base font-semibold text-white uppercase tracking-wide mb-5">
           What HedgePix Does
         </h2>
 
-        <p class="text-sm text-purple-200 leading-relaxed">
-          HedgePix uses a machine learning model trained on historical market data. It studies how
-          stocks behave in different conditions, how they relate to one another, and how volatility
-          and momentum shift across time.
+        <p class="text-base text-purple-200 leading-relaxed">
+          HedgePix uses a machine-learning model trained on historical market behaviour. It studies how
+          stocks move under different conditions, how groups of stocks relate to each other, and how
+          momentum and volatility change over time.
         </p>
 
-        <p class="text-sm text-purple-200 leading-relaxed mt-3">
-          The system produces a daily ranking of stocks based on these patterns. A stock near the top
-          has characteristics similar to names that historically performed well in comparable market
-          environments. The ranking is not a price forecast—it is an ordered list of statistical
-          attractiveness.
+        <p class="text-base text-purple-200 leading-relaxed mt-4">
+          Rather than predicting exact prices, the model produces a ranked list based on statistical
+          patterns it has identified. Stocks near the top resemble names that historically performed
+          well in similar environments.
         </p>
 
-        <!-- Divider -->
         <div class="soft-divider"></div>
-
       </div>
     </div>
-
 
 
     <!-- SECTION 2 — RIGHT -->
-    <div class="fade-block flex justify-end">
+    <div class="scroll-fade-right flex justify-end">
       <div class="max-w-xl">
-
-        <h2 class="text-sm font-semibold text-white uppercase tracking-wide mb-3">
+        <h2 class="text-base font-semibold text-white uppercase tracking-wide mb-5">
           How to Use HedgePix
         </h2>
 
-        <p class="text-sm text-purple-200 leading-relaxed">
-          The Rankings page shows the system’s outlook for today. Stocks near the top are currently
-          favoured by the model. The “Top N” selector lets you view a focused subset or explore a
-          broader portion of the universe.
+        <p class="text-base text-purple-200 leading-relaxed">
+          The Rankings page displays the model’s preferred stocks for today. Higher-ranked stocks are the
+          ones the system currently views most favourably based on its learned patterns.
         </p>
 
-        <p class="text-sm text-purple-200 leading-relaxed mt-3">
-          Clicking a ticker adds it to the chart below the table. This helps you track how its
-          ranking has evolved—whether its momentum is improving, deteriorating, or shifting in ways
-          that may matter for short-term research.
+        <p class="text-base text-purple-200 leading-relaxed mt-4">
+          Clicking a ticker adds it to the chart so you can see how its ranking changes over time. This
+          helps you identify improving momentum, weakening signals, or unstable movement.
         </p>
 
-        <!-- Divider -->
         <div class="soft-divider"></div>
-
       </div>
     </div>
 
 
-
     <!-- SECTION 3 — LEFT -->
-    <div class="fade-block flex justify-start">
+    <div class="scroll-fade-left flex justify-start">
       <div class="max-w-xl">
-
-        <h2 class="text-sm font-semibold text-white uppercase tracking-wide mb-3">
+        <h2 class="text-base font-semibold text-white uppercase tracking-wide mb-5">
           Experimental and Not Financial Advice
         </h2>
 
-        <p class="text-sm text-purple-200 leading-relaxed">
-          HedgePix is an experimental tool intended for educational purposes only. The model is
-          trained on past market data, which may not reflect future conditions. Market behaviour can
-          shift quickly due to new events, structural changes, or unexpected volatility.
+        <p class="text-base text-purple-200 leading-relaxed">
+          HedgePix is an experimental tool created for research and education. The model relies on past
+          data, which may not represent future market conditions. Financial markets can behave
+          unexpectedly and change rapidly.
         </p>
 
-        <p class="text-sm text-purple-200 leading-relaxed mt-3">
-          Nothing on this website should be treated as investment guidance or a recommendation. Real
-          trading decisions require independent research, proper risk management, and professional
-          financial advice when needed.
+        <p class="text-base text-purple-200 leading-relaxed mt-4">
+          Nothing on this website should be interpreted as financial advice. Real investment decisions
+          require independent analysis, proper risk management, and professional guidance where needed.
         </p>
-
       </div>
     </div>
 
@@ -281,6 +274,75 @@
 
 
 
+</style>
+
+<style>
+  /* Soft dividers */
+  .soft-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+
+  /* Initial fade */
+  .fade-block {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 1s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Scroll-triggered fade from left */
+  .scroll-fade-left {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+  }
+
+  /* Scroll-triggered fade from right */
+  .scroll-fade-right {
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+  }
+
+
+</style>
+
+<style>
+/* Hidden initial state */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Reveal from left */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+}
+
+/* Reveal from right */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+}
+
+/* When revealed */
+.revealed {
+  opacity: 1 !important;
+  transform: translateX(0) translateY(0) !important;
+}
 </style>
 
     <!-- RANKINGS TAB -->

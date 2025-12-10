@@ -15,15 +15,11 @@ function showTab(id) {
     }
   });
 
-  // Update sidebar active state
   ["home", "rankings", "news", "info"].forEach(t => {
     const btn = document.getElementById("tab-" + t);
     if (btn) {
-      if (t === id) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
+      if (t === id) btn.classList.add("active");
+      else btn.classList.remove("active");
     }
   });
 }
@@ -58,7 +54,7 @@ function getPointInRange(hist, start, end, fromPast) {
 function formatDelta(d) {
   if (d == null) return { text: "—", className: "text-purple-300/60" };
   if (d === 0) return { text: "0", className: "text-slate-300" };
-  const up = d < 0; // rank improved if negative
+  const up = d < 0;
   return {
     text: (d > 0 ? "+" : "−") + Math.abs(d),
     className: up ? "text-emerald-300" : "text-rose-300"
@@ -96,9 +92,40 @@ async function loadData() {
 
   renderTable();
   initChart();
+  updateHomeTop5();
 }
 
-// ---------------- Table ----------------
+// ---------------- HOME PAGE TOP 5 ----------------
+function updateHomeTop5() {
+  const strip = document.getElementById("top5Strip");
+  if (!strip || !data.length || !todayStr) return;
+
+  const rows = data
+    .map(t => {
+      const todayEntry = t.history.find(h => h.date === todayStr);
+      return todayEntry ? { ticker: t.ticker, rank: todayEntry.rank } : null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.rank - b.rank)
+    .slice(0, 5);
+
+  if (!rows.length) {
+    strip.innerHTML = `
+      <span class="text-purple-300 opacity-60 text-xs">No data available</span>
+    `;
+    return;
+  }
+
+  strip.innerHTML = rows
+    .map(r => `
+      <span class="px-4 py-2 rounded-full bg-[#150035]/60 text-purple-200 text-sm border border-purple-900/40 shadow-sm">
+        ${r.ticker}
+      </span>
+    `)
+    .join("");
+}
+
+// ---------------- Rankings Table ----------------
 function renderTable() {
   const tbody = document.getElementById("tableBody");
   if (!tbody) return;
@@ -107,7 +134,6 @@ function renderTable() {
   if (!data.length) return;
 
   const limit = parseInt(document.getElementById("rankLimit").value || "5");
-
   const pastStart = addDays(todayStr, -7);
   const futureEnd = addDays(todayStr, +7);
 
@@ -117,7 +143,7 @@ function renderTable() {
     if (!today) return null;
 
     const past = getPointInRange(hist, pastStart, todayStr, true);
-    const fut  = getPointInRange(hist, todayStr, futureEnd, false);
+    const fut = getPointInRange(hist, todayStr, futureEnd, false);
 
     return {
       ticker: t.ticker,
@@ -128,9 +154,7 @@ function renderTable() {
   }).filter(Boolean)
     .sort((a, b) => a.todayRank - b.todayRank);
 
-  const sliced = rows.slice(0, limit);
-
-  sliced.forEach(r => {
+  rows.slice(0, limit).forEach(r => {
     const p = formatDelta(r.pastDelta);
     const f = formatDelta(r.futureDelta);
 
@@ -163,10 +187,7 @@ function initChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: {
-        mode: "nearest",
-        intersect: false
-      },
+      interaction: { mode: "nearest", intersect: false },
       scales: {
         y: {
           reverse: true,
@@ -175,27 +196,16 @@ function initChart() {
             stepSize: 1,
             callback: v => Number.isInteger(v) ? v : ""
           },
-          grid: {
-            color: "rgba(201, 0, 255, 0.18)"
-          }
+          grid: { color: "rgba(201, 0, 255, 0.18)" }
         },
         x: {
-          ticks: {
-            color: "#b5b2d6",
-            maxTicksLimit: 6
-          },
-          grid: {
-            color: "rgba(255, 255, 255, 0.06)"
-          }
+          ticks: { color: "#b5b2d6", maxTicksLimit: 6 },
+          grid: { color: "rgba(255, 255, 255, 0.06)" }
         }
       },
       plugins: {
         legend: {
-          labels: {
-            color: "#f5f3ff",
-            usePointStyle: true,
-            boxWidth: 8
-          }
+          labels: { color: "#f5f3ff", usePointStyle: true, boxWidth: 8 }
         },
         tooltip: {
           backgroundColor: "#150035",
@@ -206,33 +216,21 @@ function initChart() {
         }
       },
       elements: {
-        line: {
-          borderWidth: 2,
-          tension: 0.25
-        },
-        point: {
-          radius: 0,
-          hitRadius: 6
-        }
+        line: { borderWidth: 2, tension: 0.25 },
+        point: { radius: 0, hitRadius: 6 }
       }
     }
   });
 }
 
-function randomCosmicColor(index) {
-  const colors = [
-    "#c900ff",
-    "#00e5ff",
-    "#ff6bcb",
-    "#8aff80",
-    "#ffd166"
-  ];
-  return colors[index % colors.length];
+function randomCosmicColor(i) {
+  const colors = ["#c900ff", "#00e5ff", "#ff6bcb", "#8aff80", "#ffd166"];
+  return colors[i % colors.length];
 }
 
-function toggleTickerOnChart(ticker) {
-  if (selectedTickers.has(ticker)) selectedTickers.delete(ticker);
-  else selectedTickers.add(ticker);
+function toggleTickerOnChart(t) {
+  if (selectedTickers.has(t)) selectedTickers.delete(t);
+  else selectedTickers.add(t);
   updateChart();
 }
 
@@ -247,12 +245,10 @@ function updateChart() {
     if (!item) return;
 
     const vals = chartDates.map(d => item.rankByDate[d] ?? null);
-    const color = randomCosmicColor(i++);
-
     datasets.push({
       label: t,
       data: vals,
-      borderColor: color,
+      borderColor: randomCosmicColor(i++),
       backgroundColor: "transparent"
     });
   });
@@ -261,12 +257,31 @@ function updateChart() {
   rankChart.update();
 }
 
+// ---------------- SCROLL REVEAL (IntersectionObserver) ----------------
+function initScrollReveal() {
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  document
+    .querySelectorAll(".scroll-fade-left, .scroll-fade-right, .fade-block")
+    .forEach(el => observer.observe(el));
+}
+
 // ---------------- Init ----------------
 document.addEventListener("DOMContentLoaded", () => {
   showTab("home");
+
   const limit = document.getElementById("rankLimit");
-  if (limit) {
-    limit.onchange = renderTable;
-  }
+  if (limit) limit.onchange = renderTable;
+
   loadData();
+  initScrollReveal();  // ENABLES REAL SCROLL REVEAL
 });
